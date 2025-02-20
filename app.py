@@ -50,7 +50,7 @@ if st.button('Diabetes Test Result'):
                       float(Insulin), float(BMI),float(Age),float(DiabetesPedigreeFunction)]
         
         # Make prediction
-        diab_prediction = d_model.predict([user_input])
+        diab_prediction = diabetes.predict([user_input])
 
         # Display result
         if diab_prediction[0] == 1:
