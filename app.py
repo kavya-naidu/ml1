@@ -10,7 +10,7 @@ from sklearn.metrics import accuracy_score
 st.set_page_config(page_title="Diabetes Prediction", layout="wide", page_icon="🧑‍⚕️")
 
 d_model_path=r"diabestes.sav"
-d_model=pickle.load(open(d_model_path,'rb'))
+d_model=pickle.load(open(diabetes_path,'rb'))
 
 st.title("DP using ML")
 
