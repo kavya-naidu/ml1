@@ -1,56 +1,56 @@
-import os
 import pickle
 import streamlit as st
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
 
-# Set page configuration
+
+
 st.set_page_config(page_title="Diabetes Prediction", layout="wide", page_icon="🧑‍⚕️")
 
-# Load the saved diabetes model
-diabetes_model_path = r"C:\third\diabetes.sav"
-diabetes_model = pickle.load(open(diabetes_model_path, 'rb'))
+d_model_path=r"diabestes.sav"
+d_model=pickle.load(open(d_model_path,'rb'))
 
-# Page title
-st.title('Diabetes Prediction using ML')
+st.title("DP using ML")
 
-# Getting the input data from the user
-col1, col2, col3 = st.columns(3)
+col1,col2,col3=st.columns(3)
 
 with col1:
-    Pregnancies = st.text_input('Number of Pregnancies')
+    Pregnancies=st.text_input('Number of Pregnancies')
 
 with col2:
-    Glucose = st.text_input('Glucose Level')
+    Glucose=st.text_input('Glucose')
 
 with col3:
-    BloodPressure = st.text_input('Blood Pressure value')
+    BloodPressure=st.text_input('Blood Pressure')
 
 with col1:
-    SkinThickness = st.text_input('Skin Thickness value')
+    SkinThickness=st.text_input('Skin Thickness')
 
 with col2:
-    Insulin = st.text_input('Insulin Level')
+    Insulin=st.text_input('Insulin Level')
 
 with col3:
-    BMI = st.text_input('BMI value')
+    BMI=st.text_input('BMI Index')
 
 with col1:
-    DiabetesPedigreeFunction = st.text_input('Diabetes Pedigree Function value')
+    Age=st.text_input('Age')
 
 with col2:
-    Age = st.text_input('Age of the Person')
+    DiabetesPedigreeFunction=st.text_input('DiabetesPedigreeFunction Level')
 
-# Prediction result
-diab_diagnosis = ''
+    diab_diagnosis=''
 
-# Creating a button for Prediction
+
 if st.button('Diabetes Test Result'):
     try:
         # Convert input to float
         user_input = [float(Pregnancies), float(Glucose), float(BloodPressure), float(SkinThickness), 
-                      float(Insulin), float(BMI), float(DiabetesPedigreeFunction), float(Age)]
+                      float(Insulin), float(BMI),float(Age),float(DiabetesPedigreeFunction)]
         
         # Make prediction
-        diab_prediction = diabetes_model.predict([user_input])
+        diab_prediction = d_model.predict([user_input])
 
         # Display result
         if diab_prediction[0] == 1:
@@ -62,3 +62,15 @@ if st.button('Diabetes Test Result'):
     
     except ValueError:
         st.error("Please enter valid numerical values for all fields.")
+
+if st.button('Show Model Accuracy'):
+        
+        diabetes_dataset = pd.read_csv(r"diabetes.sav")
+
+        X_test = diabetes_dataset.drop(columns=["Outcome"])
+        y_test = diabetes_dataset["Outcome"]
+
+
+        y_pred = d_model.predict(X_test)
+        accuracy = accuracy_score(y_test, y_pred)
+        st.write(f"Model Accuracy: {accuracy*100:.2f}%")
